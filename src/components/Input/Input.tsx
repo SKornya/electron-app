@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
 
-import inputsTranslation from '../../utils/inputsTranslations';
+import inputsTranslation from '../../utils/plotSettingsTranslations';
 import './Input.less';
 
 interface InputProps {

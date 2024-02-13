@@ -2,10 +2,10 @@ interface Inputs {
   [key: string]: string;
 }
 
-const inputsTranslation: Inputs = {
+const plotSettingsTranslation: Inputs = {
   min: 'Минимальное значение Y',
   max: 'Максимальное значение Y',
   tickInterval: 'Цена деления Y',
 };
 
-export default inputsTranslation;
+export default plotSettingsTranslation;
