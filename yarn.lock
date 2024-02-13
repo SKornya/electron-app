@@ -2556,6 +2556,13 @@ hasown@^2.0.0:
   dependencies:
     function-bind "^1.1.2"
 
+highcharts-custom-events@^3.0.10:
+  version "3.0.10"
+  resolved "https://registry.yarnpkg.com/highcharts-custom-events/-/highcharts-custom-events-3.0.10.tgz#6f2fcd67d062221e5dd2bfdfdccb1bba1b695372"
+  integrity sha512-swD0v8qovr9tzW6wNdebJKWQS5xTUclU2XznZw7+U6zMpedzEw7nxMZCog+P3JBDvp2cLO8ySiy7EC29DayfFw==
+  dependencies:
+    highcharts ">=5.0.9"
+
 highcharts-export-server@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/highcharts-export-server/-/highcharts-export-server-3.1.1.tgz#b6665b326f8ae3c3f254b269ea659bfef68bb249"
@@ -2579,7 +2586,7 @@ highcharts-react-official@^3.2.1:
   resolved "https://registry.yarnpkg.com/highcharts-react-official/-/highcharts-react-official-3.2.1.tgz#4b62a7af2969bdebde6b338d36f6b9bf1f1029bc"
   integrity sha512-hyQTX7ezCxl7JqumaWiGsroGWalzh24GedQIgO3vJbkGOZ6ySRAltIYjfxhrq4HszJOySZegotEF7v+haQ75UA==
 
-highcharts@^11.3.0:
+highcharts@>=5.0.9, highcharts@^11.3.0:
   version "11.3.0"
   resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-11.3.0.tgz#cb9e366f9889ec8fd2a546a44cba3e138824458f"
   integrity sha512-Dk+Qfk/xit8KnXKPDxmcVcq48ZlcVSq7oYJR5VZlAVWnJ0BY3JFFi1GOvgSNUzlh2wzsfenihWpkAkWoag4Xqg==
