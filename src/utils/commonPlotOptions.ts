@@ -8,7 +8,7 @@ const options: Highcharts.Options = {
   chart: {
     backgroundColor: '#1a1a1a',
     spacing: [30, 30, 30, 30],
-    height: '68%'
+    height: (9 / 16 * 100) + '%',
   },
   legend: {
     enabled: false,
