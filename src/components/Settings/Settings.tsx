@@ -6,9 +6,11 @@ import './Settings.less';
 
 interface SettingsProps {
   setYAxis: React.Dispatch<React.SetStateAction<Highcharts.YAxisOptions>>;
+  top: number;
+  left: number;
 }
 
-const Settings: FunctionComponent<SettingsProps> = ({ setYAxis }) => {
+const Settings: FunctionComponent<SettingsProps> = ({ setYAxis, top, left }) => {
   const formRef = useRef<HTMLFormElement>(null);
 
   const setSettings = (event: FormEvent) => {
@@ -19,8 +21,15 @@ const Settings: FunctionComponent<SettingsProps> = ({ setYAxis }) => {
     const formDataObject: { [key: string]: number | null } = {};
     formData.forEach((value, key) => {
       const data = value as string;
-      const numberedData = Number(data);
-      formDataObject[key] = isNaN(numberedData) ? null : numberedData;
+
+      let numberedData;
+
+      if (data === '') {
+        formDataObject[key] = null;
+      } else {
+        numberedData = Number(data);
+        formDataObject[key] = isNaN(numberedData) ? null : numberedData;
+      }
     });
 
     console.log(formDataObject);
@@ -29,13 +38,13 @@ const Settings: FunctionComponent<SettingsProps> = ({ setYAxis }) => {
   };
 
   return (
-    <div className="settings">
+    <div className="settings" style={{ position: 'absolute', top, left }}>
       <form ref={formRef} onSubmit={setSettings}>
         <Input name="min" />
         <Input name="max" />
         <Input name="tickInterval" />
 
-        <button className='settings__button'>Save settings</button>
+        <button className='settings__button'>Применить настройки</button>
       </form>
     </div>
   );

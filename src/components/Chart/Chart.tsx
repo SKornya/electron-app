@@ -1,4 +1,4 @@
-import { FunctionComponent, useState, useRef, useEffect } from 'react';
+import React, { FunctionComponent, useState, useRef, useEffect } from 'react';
 import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import exportingOption from 'highcharts/modules/exporting';
@@ -15,7 +15,7 @@ const Chart: FunctionComponent = () => {
   const [yAxis, setYAxis] = useState<Highcharts.YAxisOptions>({
     min: null,
     max: null,
-    tickInterval: 1,
+    tickInterval: 1
   });
 
   exportingOption(Highcharts);
@@ -32,28 +32,26 @@ const Chart: FunctionComponent = () => {
       gridLineWidth: 1,
       gridLineColor: '#595959',
       title: {
-        text: 'Time',
+        text: 'Time'
       },
       labels: {
         style: {
-          color: '#fff',
-        },
-      },
+          color: '#fff'
+        }
+      }
     },
     yAxis: {
       ...yAxis,
       title: {
-        text: 'Watts',
+        text: 'Watts'
       },
       gridLineColor: '#595959',
       labels: {
         style: {
-          color: '#fff',
-        },
+          color: '#fff'
+        }
       },
-      grid: {
-
-      },
+      grid: {}
     },
     series: [
       {
@@ -61,32 +59,27 @@ const Chart: FunctionComponent = () => {
         data,
         name: 'Power',
         marker: {
-          enabled: false,
-        },
-      },
+          enabled: false
+        }
+      }
     ],
     tooltip: {
       headerFormat: '<b>{series.name}</b><br/>',
-      pointFormat: '{point.x}: {point.y}',
+      pointFormat: '{point.x}: {point.y}'
     },
     exporting: {
       chartOptions: {
         chart: {
           width: 1000,
-          height: 500,
-        },
+          height: 500
+        }
       },
       buttons: {
         contextButton: {
-          menuItems: [
-            'downloadPNG',
-            'downloadJPEG',
-            'downloadPDF',
-            'downloadSVG',
-          ],
-        },
-      },
-    },
+          menuItems: ['downloadPNG', 'downloadJPEG', 'downloadPDF', 'downloadSVG']
+        }
+      }
+    }
   };
 
   const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
@@ -97,10 +90,7 @@ const Chart: FunctionComponent = () => {
     const mins = date.getMinutes();
 
     setData([...data, Math.round(Math.random() * 1000) / 100]);
-    setCategories([
-      ...categories,
-      `${hours}:${mins >= 10 ? mins : `0${mins}`}`,
-    ]);
+    setCategories([...categories, `${hours}:${mins >= 10 ? mins : `0${mins}`}`]);
   };
 
   useEffect(() => {
@@ -111,18 +101,27 @@ const Chart: FunctionComponent = () => {
     return () => {
       clearInterval(interval);
     };
-  });
+  }, [data, categories]);
+
+  const [show, setShow] = useState<boolean>(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const showSettings = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.preventDefault();
+    setShow(true);
+    setPosition({ x: e.clientX, y: e.clientY });
+  }
+
+  const hideSettings = () => {
+    setShow(false);
+  }
 
   return (
     <div className="plot">
-      <Settings setYAxis={setYAxis} />
+      {show && <Settings setYAxis={setYAxis} top={position.y} left={position.x} />}
 
-      <div className="plot__container">
-        <HighchartsReact
-          highcharts={Highcharts}
-          options={extendedOptions}
-          ref={chartComponentRef}
-        />
+      <div className="plot__container" onClick={hideSettings} onContextMenu={(e) => showSettings(e)}>
+        <HighchartsReact highcharts={Highcharts} options={extendedOptions} ref={chartComponentRef} />
       </div>
     </div>
   );
