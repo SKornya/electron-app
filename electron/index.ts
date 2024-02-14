@@ -18,6 +18,7 @@ function createWindow() {
     show: true,
     resizable: true,
     fullscreenable: true,
+    autoHideMenuBar: true,
     webPreferences: {
       preload: join(__dirname, 'preload.js')
     }
