@@ -23,8 +23,6 @@ const Chart: FunctionComponent = () => {
   const data = useSelector((state: RootState) => state.data);
   const categories = useSelector((state: RootState) => state.categories);
 
-  // const [data, setData] = useState<Array<number>>([]);
-  // const [categories, setCategories] = useState<Array<string>>([]);
   const [yAxis, setYAxis] = useState<Highcharts.YAxisOptions>({
     min: null,
     max: null,
@@ -82,7 +80,7 @@ const Chart: FunctionComponent = () => {
         click: (event: MouseEvent) => {
           // console.log(event);
           event.preventDefault();
-
+          // event.stopPropagation();
           // if (event.button === 2) {
             setShow(!show);
             setPosition({ x: event.clientX, y: event.clientY });
@@ -103,6 +101,7 @@ const Chart: FunctionComponent = () => {
       },
     ],
     tooltip: {
+      enabled: false,
       headerFormat: '<b>{series.name}</b><br/>',
       pointFormat: '{point.x}: {point.y}'
     },
@@ -175,19 +174,13 @@ const Chart: FunctionComponent = () => {
 
   return (
     <>
-      {/* <div className="plot"> */}
       {show && <Settings setYAxis={setYAxis} top={position.y} left={position.x} />}
 
-      {/* <div className="plot__container" onClick={hideSettings} onContextMenu={(e) => showSettings(e)}> */}
       <HighchartsReact
-        // onClick={hideSettings}
-        // onContextMenu={(e) => showSettings(e)}
         highcharts={Highcharts}
         options={extendedOptions}
         ref={chartComponentRef}
       />
-      {/* </div> */}
-      {/* </div> */}
     </>
   );
 };
