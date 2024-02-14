@@ -96,7 +96,12 @@ const Chart: FunctionComponent = () => {
         data,
         name: 'Power',
         marker: {
-          enabled: false
+          enabled: false,
+        },
+        states: {
+          hover: {
+            enabled: false,
+          },
         },
       },
     ],
