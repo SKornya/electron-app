@@ -8,8 +8,18 @@ const options: Highcharts.Options = {
   chart: {
     backgroundColor: '#1a1a1a',
     spacing: [30, 30, 30, 30],
-    height: (9 / 16 * 100) + '%',
-    reflow: true
+    height: (9 / 18 * 100) + '%',
+    reflow: true,
+    zooming: {
+      type: 'xy',
+    },
+  },
+  plotOptions: {
+    series: {
+      marker: {
+        enabled: false,
+      },
+    },
   },
   legend: {
     enabled: false
@@ -17,7 +27,7 @@ const options: Highcharts.Options = {
   boost: {
     useGPUTranslations: true,
     seriesThreshold: 1
-  }
+  },
 };
 
 export default options;
