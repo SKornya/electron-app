@@ -160,17 +160,18 @@ const Chart: FunctionComponent = () => {
 
   useEffect(() => {
     const resizeHandle = () => {
-      if (chartComponentRef.current) {
-        chartComponentRef.current.chart.redraw();
+      if (chartComponentRef.current && chartComponentRef.current.chart) {
+        chartComponentRef.current.chart.setSize(undefined, undefined, true);
       }
     };
-
+  
     window.addEventListener('resize', resizeHandle);
-
+  
     return () => {
       window.removeEventListener('resize', resizeHandle);
     }
   }, []);
+  
 
   return (
     <>
