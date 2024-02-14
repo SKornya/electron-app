@@ -1,4 +1,10 @@
 import { FunctionComponent, useState, useRef, useEffect } from 'react';
+
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '../../store';
+import { RootState } from '../../store';
+import { setData, setTime } from '../../model/reducer';
+
 import * as Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 import exportingOption from 'highcharts/modules/exporting';
@@ -12,8 +18,13 @@ import Settings from '../Settings/Settings';
 import './Chart.less';
 
 const Chart: FunctionComponent = () => {
-  const [data, setData] = useState<Array<number>>([]);
-  const [categories, setCategories] = useState<Array<string>>([]);
+
+  const dispatch = useAppDispatch();
+  const data = useSelector((state: RootState) => state.data);
+  const categories = useSelector((state: RootState) => state.categories);
+
+  // const [data, setData] = useState<Array<number>>([]);
+  // const [categories, setCategories] = useState<Array<string>>([]);
   const [yAxis, setYAxis] = useState<Highcharts.YAxisOptions>({
     min: null,
     max: null,
@@ -34,7 +45,11 @@ const Chart: FunctionComponent = () => {
     ...options,
 
     xAxis: {
-      categories,
+      categories: categories.map((date: Date) => {
+        const hours = date.getHours();
+        const mins = date.getMinutes();
+        return `${hours}:${mins.toString().padStart(2, '0')}`;
+      }),
       tickInterval: Math.ceil(categories.length / desiredTickCount),
       gridLineWidth: 1,
       gridLineColor: '#595959',
@@ -110,11 +125,8 @@ const Chart: FunctionComponent = () => {
 
   const addPoint = () => {
     const date = new Date();
-    const hours = date.getHours();
-    const mins = date.getMinutes();
-
-    setData([...data, Math.round(Math.random() * 1000) / 100]);
-    setCategories([...categories, `${hours}:${mins >= 10 ? mins : `0${mins}`}`]);
+    dispatch(setData(Math.ceil(Math.random() * 10)));
+    dispatch(setTime(date));
   };
 
   useEffect(() => {
