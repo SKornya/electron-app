@@ -9,8 +9,12 @@
 .container {
   width: 100%;
   height: calc(100vh - 4rem);
-  display: flex;
+
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 20px;
+  /* display: flex; */
   /* overflow: hidden; */
   /* justify-content: end; */
-  align-items: start;
+  /* align-items: start; */
 }

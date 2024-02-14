@@ -20,12 +20,12 @@
   "scripts": {
     "dev": "concurrently \"yarn dev:vite\" \" yarn dev:electron\"",
     "dev:vite": "vite",
-    "dev:electron": "npm run build:electron && electron .",
-    "build": "npm run build:vite && npm run build:electron",
+    "dev:electron": "yarn build:electron && electron .",
+    "build": "yarn build:vite && yarn build:electron",
     "build:vite": "vite build",
     "build:electron": "tsc -p electron",
-    "dist": "npm run build && electron-builder",
-    "pack": "npm run build && electron-builder --dir",
+    "dist": "yarn build && electron-builder",
+    "pack": "yarn build && electron-builder --dir",
     "clean": "rimraf dist main src/out",
     "type-check": "tsc",
     "lint": "eslint . --ext js,jsx,ts,tsx",
@@ -35,10 +35,13 @@
     "@react-three/fiber": "^8.15.16",
     "electron-is-dev": "^2.0.0",
     "highcharts": "^11.3.0",
+    "highcharts-custom-events": "^3.0.10",
     "highcharts-export-server": "^3.1.1",
     "highcharts-react-official": "^3.2.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-redux": "^9.1.0",
+    "redux": "^5.0.1"
   },
   "devDependencies": {
     "@types/node": "^17.0.22",

@@ -2,7 +2,7 @@
 import { join } from 'path';
 
 // Packages
-import { BrowserWindow, app, ipcMain, IpcMainEvent } from 'electron';
+import { BrowserWindow, app, ipcMain, IpcMainEvent, globalShortcut } from 'electron';
 import isDev from 'electron-is-dev';
 
 const height = 720;
@@ -18,6 +18,7 @@ function createWindow() {
     show: true,
     resizable: true,
     fullscreenable: true,
+    autoHideMenuBar: true,
     webPreferences: {
       preload: join(__dirname, 'preload.js')
     }
@@ -33,7 +34,7 @@ function createWindow() {
     window?.loadFile(url);
   }
   // Open the DevTools.
-  window.webContents.openDevTools();
+  // window.webContents.openDevTools();
 
   // For AppBar
   ipcMain.on('minimize', () => {
@@ -49,6 +50,15 @@ function createWindow() {
   ipcMain.on('close', () => {
     window.close();
   });
+
+  // Запрет на перезагрузку горячими клавишами
+  globalShortcut.register('CommandOrControl+R', () => {
+    console.log('Preventing reload...');
+  });
+  
+  globalShortcut.register('Shift+CommandOrControl+R', () => {
+    console.log('Preventing reload with Shift...');
+  });
 }
 
 // This method will be called when Electron has finished
@@ -62,13 +72,32 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
-});
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
+  app.on('ready', () => {
+    // Зарегистрируем глобальную горячую клавишу для Ctrl+R
+    const preventReloadShortcut = globalShortcut.register('CommandOrControl+R', () => {
+      // Предотвратим выполнение действия по умолчанию (перезагрузку приложения)
+      console.log('Preventing reload...');
+    });
+  
+    // Проверим, успешно ли зарегистрировалась горячая клавиша
+    if (!preventReloadShortcut) {
+      console.error('Failed to register prevent reload shortcut');
+    }
+  });
+  
+  // Освободим ресурсы при закрытии приложения
+  app.on('will-quit', () => {
+    // Удалим глобальную горячую клавишу
+    globalShortcut.unregisterAll();
+  });
+  
+  // Quit when all windows are closed, except on macOS. There, it's common
+  // for applications and their menu bar to stay active until the user quits
+  // explicitly with Cmd + Q.
+  app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') app.quit();
+  });
 });
 
 // In this file you can include the rest of your app's specific main process
