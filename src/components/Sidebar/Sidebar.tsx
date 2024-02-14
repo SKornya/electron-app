@@ -34,16 +34,16 @@ const Sidebar: FunctionComponent = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((value, index) => {
+          {categories.map((value, index) => {
             return (
-              <tr>
+              <tr key={value.getTime()}>
                 <td>
-                  {categories[index].toDateString()}
+                  {value.toDateString()}
                   <br />
-                  {`${categories[index].getHours()}:${categories[index].getMinutes().toString().padStart(2, '0')}`}
+                  {`${value.getHours()}:${value.getMinutes().toString().padStart(2, '0')}`}
                 </td>
                 <td>
-                  {value}
+                  {data[index]}
                 </td>
               </tr>
             )
