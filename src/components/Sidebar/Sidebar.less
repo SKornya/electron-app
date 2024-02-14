@@ -1,47 +1,50 @@
-.table-container {
-  overflow: auto;
+// TODO: убрать двойные рамки, при этом заголовки оставить фиксированными
 
+.table-container {
+  height: 100%;
+  overflow: auto;
+  position: relative;
+  
+  background-color: #1a1a1a;
   /* Стилизация полосы прокрутки */
 /* Ширина и цвет полосы прокрутки */
-&::-webkit-scrollbar {
-  width: 5px;
-}
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
 
-/* Фоновая заливка полосы прокрутки */
-&::-webkit-scrollbar-track {
-  background-color: #f1f1f1;
-}
+  /* Фоновая заливка полосы прокрутки */
+  &::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }
 
-/* Цвет и форма дорожки ползунка */
-&::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 3px;
-}
+  /* Цвет и форма дорожки ползунка */
+  &::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 3px;
+  }
 
-/* Изменение внешнего вида ползунка при наведении */
-&::-webkit-scrollbar-thumb:hover {
-  background-color: #555;
-}
-
-
-}
-
-.table {
-  overflow: auto;
-
-  border: 1px solid #ffffff;
-  width: 100%;
-
-  font-size: 12px;
-
-  border-collapse: collapse;
-  
-  & td, & th {
-    border: 1px solid #d7cfcf;
-    padding: 5px;
+  /* Изменение внешнего вида ползунка при наведении */
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
   }
 }
 
-td:nth-child(1) {
-  text-align: left;
+.table {
+  width: 100%;
+  font-size: 12px;
+  border-collapse: separate; /* Объединение границ ячеек */
+
+  th, td {
+    border: 1px solid #d7cfcf; /* Установка границ для ячеек */
+    padding: 5px;
+  }
+
+  th {
+    background-color: #1a1a1a;
+    // border: 1px solid #646cff; /* Задание фона для заголовков */
+    color: white; /* Задание цвета текста для заголовков */
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
 }
