@@ -21,13 +21,14 @@ const Settings: FunctionComponent<SettingsProps> = ({ setYAxis, top, left }) => 
     const formDataObject: { [key: string]: number | null } = {};
     formData.forEach((value, key) => {
       const data = value as string;
+      const formattedDelimiterData: string = data.replace(',', '.');
 
       let numberedData;
 
-      if (data === '') {
+      if (formattedDelimiterData === '') {
         formDataObject[key] = null;
       } else {
-        numberedData = Number(data);
+        numberedData = Number(formattedDelimiterData);
         formDataObject[key] = isNaN(numberedData) ? null : numberedData;
       }
     });
