@@ -6,8 +6,8 @@ import { useSelector } from "react-redux";
 import './Sidebar.less';
 
 const Sidebar: FunctionComponent = () => {
-  const data = useSelector((state: RootState) => state.data);
-  const categories = useSelector((state: RootState) => state.categories);
+  const data = useSelector((state: RootState) => state.data.data);
+  const categories = useSelector((state: RootState) => state.data.categories);
 
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
