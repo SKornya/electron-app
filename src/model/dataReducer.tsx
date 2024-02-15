@@ -11,6 +11,7 @@ interface DataAction {
 
 const SET_DATA = 'SETDATA';
 const SET_TIME = 'SETTIME';
+const RESET_DATA = 'RESET_DATA';
 
 const initialState: Data = {
   data: [],
@@ -25,6 +26,10 @@ const setData = (value: number) => ({
 const setTime = (value: Date) => ({
   type: SET_TIME,
   payload: value,
+});
+
+const resetData = () => ({
+  type: RESET_DATA,
 });
 
 const dataReducer = (state: Data = initialState, action: DataAction) => {
@@ -45,9 +50,14 @@ const dataReducer = (state: Data = initialState, action: DataAction) => {
         });
       }
       return state;
+    case RESET_DATA:
+      return {
+        data: [],
+        categories: [],
+      }
     default:
       return state;
   }
 };
 
-export { setData, setTime, dataReducer };
+export { setData, setTime, resetData, dataReducer };
