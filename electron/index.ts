@@ -8,9 +8,11 @@ import isDev from 'electron-is-dev';
 const height = 720;
 const width = 1280;
 
+let window: BrowserWindow | null = null;
+
 function createWindow() {
   // Create the browser window.
-  const window = new BrowserWindow({
+  window = new BrowserWindow({
     width,
     height,
     //  change to false to use AppBar
@@ -39,16 +41,16 @@ function createWindow() {
   // For AppBar
   ipcMain.on('minimize', () => {
     // eslint-disable-next-line no-unused-expressions
-    window.isMinimized() ? window.restore() : window.minimize();
+    window?.isMinimized() ? window?.restore() : window?.minimize();
     // or alternatively: win.isVisible() ? win.hide() : win.show()
   });
   ipcMain.on('maximize', () => {
     // eslint-disable-next-line no-unused-expressions
-    window.isMaximized() ? window.restore() : window.maximize();
+    window?.isMaximized() ? window?.restore() : window?.maximize();
   });
 
   ipcMain.on('close', () => {
-    window.close();
+    window?.close();
   });
 
   // Запрет на перезагрузку горячими клавишами
