@@ -1,6 +1,6 @@
 import { createStore } from 'redux';
-import { reducer } from './model/reducer';
 import { useDispatch } from 'react-redux';
+import reducer from './model/reducer';
 
 const store = createStore(reducer);
 
