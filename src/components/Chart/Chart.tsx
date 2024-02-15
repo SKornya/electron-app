@@ -1,131 +1,145 @@
-import { FunctionComponent, useState, useRef, useEffect } from 'react';
-
+import { FunctionComponent, useEffect, memo } from 'react';
 import { useSelector } from 'react-redux';
-import { useAppDispatch } from '../../store';
-import { RootState } from '../../store';
-import { setData, setTime } from '../../model/reducer';
 
-import * as Highcharts from 'highcharts/highstock';
-import HighchartsReact from 'highcharts-react-official';
-import exportingOption from 'highcharts/modules/exporting';
-import offlineOption from 'highcharts/modules/offline-exporting';
-import Boost from 'highcharts/modules/boost';
-import HighchartsCustomEvents from 'highcharts-custom-events';
+import { RootState, useAppDispatch } from '../../store';
+import { setData, setTime } from '../../model/dataReducer';
 
-import options from '../../utils/commonPlotOptions';
-import Settings from '../Settings/Settings';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ChartOptions,
+  ChartData,
+  TimeScale,
+  Decimation,
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
+import 'chartjs-adapter-date-fns'; // Подключаем адаптер для работы с датами
+import ZoomPlugin from 'chartjs-plugin-zoom';
+import { ru } from 'date-fns/locale';
 
-import './Chart.less';
-
-const Chart: FunctionComponent = () => {
-
+const Chart: FunctionComponent = memo(() => {
+  
   const dispatch = useAppDispatch();
-  const data = useSelector((state: RootState) => state.data);
-  const categories = useSelector((state: RootState) => state.categories);
+  const values = useSelector((state: RootState) => state.data.data);
+  const categories = useSelector((state: RootState) => state.data.categories);
 
-  const [yAxis, setYAxis] = useState<Highcharts.YAxisOptions>({
-    min: null,
-    max: null,
-    tickInterval: 1
-  });
+  const parsedData = values.map((value, i) => ({
+    x: categories[i].getTime(),
+    y: value,
+  }));
 
-  const [show, setShow] = useState<boolean>(false);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-
-  exportingOption(Highcharts);
-  offlineOption(Highcharts);
-  Boost(Highcharts);
-  HighchartsCustomEvents(Highcharts);
-
-  const desiredTickCount = 10;
-
-  const extendedOptions: Highcharts.Options = {
-    ...options,
-
-    xAxis: {
-      categories: categories.map((date: Date) => {
-        const hours = date.getHours();
-        const mins = date.getMinutes();
-        return `${hours}:${mins.toString().padStart(2, '0')}`;
-      }),
-      tickInterval: Math.ceil(categories.length / desiredTickCount),
-      gridLineWidth: 1,
-      gridLineColor: '#595959',
-      title: {
-        text: 'Time'
-      },
-      labels: {
-        style: {
-          color: '#fff'
-        }
-      }
-    },
-    yAxis: {
-      ...yAxis,
-      title: {
-        text: 'Watts'
-      },
-      gridLineColor: '#595959',
-      labels: {
-        style: {
-          color: '#fff'
-        }
-      },
-      grid: {}
-    },
-    chart: {
-      ...options.chart,
-      events: {
-        // TODO: Разобраться с кастомными событиями (настройки на правую кнопку?)
-        click: (event: MouseEvent) => {
-          // console.log(event);
-          event.preventDefault();
-          // event.stopPropagation();
-          // if (event.button === 2) {
-            setShow(!show);
-            setPosition({ x: event.clientX, y: event.clientY });
-          // }
-
-          // setShow(false);
+  ChartJS.register(
+    Title, 
+    Tooltip,
+    Legend,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    TimeScale,
+    ZoomPlugin,
+    Decimation,
+  );
+  
+  const options: ChartOptions<'line'> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    spanGaps: true,
+    parsing: false,
+    scales: {
+      x: {
+        type: 'time',
+        max: undefined,
+        min: undefined,
+        time: {
+          parser: 'X',
+          unit: 'second',
+          displayFormats: {
+            second: 'HH:mm:ss',
+          },
         },
-      },
-    },
-    series: [
-      {
-        type: 'spline',
-        data,
-        name: 'Power',
-        marker: {
-          enabled: false,
+        ticks: {
+          maxTicksLimit: 10,
         },
-        states: {
-          hover: {
-            enabled: false,
+        grid: {
+          color: '#707070',
+        },  
+        adapters: {
+          date: {
+            locale: ru,
           },
         },
       },
-    ],
-    tooltip: {
-      enabled: false,
-      headerFormat: '<b>{series.name}</b><br/>',
-      pointFormat: '{point.x}: {point.y}'
-    },
-    exporting: {
-      chartOptions: {
-        chart: {
-          width: 1000,
-          height: 500
-        }
-      },
-      buttons: {
-        contextButton: {
-          menuItems: ['downloadPNG', 'downloadJPEG', 'downloadPDF', 'downloadSVG']
-        }
+      y: {
+        max: undefined,
+        min: undefined,
+        grid: {
+          color: '#707070',
+        },
+        ticks: {
+          stepSize: 1,
+        },
       }
-    }
+    },
+    plugins: {
+      decimation: {
+        enabled: true,
+        algorithm: 'lttb',
+        threshold: 500,
+        samples: 250,
+      },
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        enabled: false,
+      },
+      zoom: {
+        pan: {
+          enabled: true,
+          mode: 'x',
+        },
+        zoom: {
+          mode: 'x',
+          wheel: {
+            enabled: true,
+          },
+          pinch: {
+            enabled: true,
+          },
+        },
+      },
+    },
+    datasets: {
+      line: {
+        pointRadius: 0,
+      },
+    },
+    layout: {
+      padding: 20,
+    },
+    animation: false,
+    backgroundColor: 'yellow',
   };
-
-  const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
+    
+  const data: ChartData<'line'> = {
+    datasets: [
+      {
+        label: 'Dataset 1',
+        data: parsedData,
+        borderColor: '#646cff',
+        borderWidth: 1,
+        backgroundColor: '#1a1a1a',
+        indexAxis: 'x',
+      },
+    ],
+  };
 
   const addPoint = () => {
     const date = new Date();
@@ -136,58 +150,15 @@ const Chart: FunctionComponent = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       addPoint();
-    }, 5000);
+    }, 50);
 
     return () => {
       clearInterval(interval);
     };
-  }, [data, categories]);
-
-  // const hideSettings = () => {
-  //   setShow(false);
-  // };
-
-  // const showSettings = (e: MouseEvent) => {
-  //   setShow(!show);
-  //   setPosition({ x: e.clientX, y: e.clientY });
-  // };
-
-  // useEffect(() => {
-  //   window.addEventListener('contextmenu', showSettings);
-  //   window.addEventListener('click', hideSettings, true);
-
-  //   return () => {
-  //     window.removeEventListener('contextmenu', showSettings);
-  //     window.removeEventListener('click', hideSettings);
-  //   };
-  // }, []);
-
-  useEffect(() => {
-    const resizeHandle = () => {
-      if (chartComponentRef.current && chartComponentRef.current.chart) {
-        chartComponentRef.current.chart.setSize(undefined, undefined, true);
-      }
-    };
-  
-    window.addEventListener('resize', resizeHandle);
-  
-    return () => {
-      window.removeEventListener('resize', resizeHandle);
-    }
   }, []);
-  
 
-  return (
-    <>
-      {show && <Settings setYAxis={setYAxis} top={position.y} left={position.x} />}
 
-      <HighchartsReact
-        highcharts={Highcharts}
-        options={extendedOptions}
-        ref={chartComponentRef}
-      />
-    </>
-  );
-};
+  return <Line  options={options} data={data} />;
+})
 
 export default Chart;
