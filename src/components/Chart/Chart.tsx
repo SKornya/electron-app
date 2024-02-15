@@ -1,8 +1,7 @@
-import { FunctionComponent, useEffect, memo } from 'react';
+import { FunctionComponent, memo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { RootState, useAppDispatch } from '../../store';
-import { setData, setTime } from '../../model/dataReducer';
+import { RootState } from '../../store';
 
 import {
   Chart as ChartJS,
@@ -16,7 +15,7 @@ import {
   ChartOptions,
   ChartData,
   TimeScale,
-  Decimation,
+  Decimation
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import 'chartjs-adapter-date-fns'; // Подключаем адаптер для работы с датами
@@ -24,18 +23,16 @@ import ZoomPlugin from 'chartjs-plugin-zoom';
 import { ru } from 'date-fns/locale';
 
 const Chart: FunctionComponent = memo(() => {
-  
-  const dispatch = useAppDispatch();
   const values = useSelector((state: RootState) => state.data.data);
   const categories = useSelector((state: RootState) => state.data.categories);
 
   const parsedData = values.map((value, i) => ({
     x: categories[i].getTime(),
-    y: value,
+    y: value
   }));
 
   ChartJS.register(
-    Title, 
+    Title,
     Tooltip,
     Legend,
     CategoryScale,
@@ -44,9 +41,9 @@ const Chart: FunctionComponent = memo(() => {
     LineElement,
     TimeScale,
     ZoomPlugin,
-    Decimation,
+    Decimation
   );
-  
+
   const options: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
@@ -61,30 +58,30 @@ const Chart: FunctionComponent = memo(() => {
           parser: 'X',
           unit: 'second',
           displayFormats: {
-            second: 'HH:mm:ss',
-          },
+            second: 'HH:mm:ss'
+          }
         },
         ticks: {
-          maxTicksLimit: 10,
+          maxTicksLimit: 10
         },
         grid: {
-          color: '#707070',
-        },  
+          color: '#707070'
+        },
         adapters: {
           date: {
-            locale: ru,
-          },
-        },
+            locale: ru
+          }
+        }
       },
       y: {
         max: undefined,
         min: undefined,
         grid: {
-          color: '#707070',
+          color: '#707070'
         },
         ticks: {
-          stepSize: 1,
-        },
+          stepSize: 1
+        }
       }
     },
     plugins: {
@@ -92,42 +89,42 @@ const Chart: FunctionComponent = memo(() => {
         enabled: true,
         algorithm: 'lttb',
         threshold: 500,
-        samples: 250,
+        samples: 100
       },
       legend: {
-        display: false,
+        display: false
       },
       tooltip: {
-        enabled: false,
+        enabled: false
       },
       zoom: {
         pan: {
           enabled: true,
-          mode: 'x',
+          mode: 'x'
         },
         zoom: {
           mode: 'x',
           wheel: {
-            enabled: true,
+            enabled: true
           },
           pinch: {
-            enabled: true,
-          },
-        },
-      },
+            enabled: true
+          }
+        }
+      }
     },
     datasets: {
       line: {
-        pointRadius: 0,
-      },
+        pointRadius: 0
+      }
     },
     layout: {
-      padding: 20,
+      padding: 20
     },
     animation: false,
-    backgroundColor: 'yellow',
+    backgroundColor: 'yellow'
   };
-    
+
   const data: ChartData<'line'> = {
     datasets: [
       {
@@ -136,29 +133,12 @@ const Chart: FunctionComponent = memo(() => {
         borderColor: '#646cff',
         borderWidth: 1,
         backgroundColor: '#1a1a1a',
-        indexAxis: 'x',
-      },
-    ],
+        indexAxis: 'x'
+      }
+    ]
   };
 
-  const addPoint = () => {
-    const date = new Date();
-    dispatch(setData(Math.ceil(Math.random() * 10)));
-    dispatch(setTime(date));
-  };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      addPoint();
-    }, 50);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
-
-  return <Line  options={options} data={data} />;
-})
+  return <Line options={options} data={data} />;
+});
 
 export default Chart;
