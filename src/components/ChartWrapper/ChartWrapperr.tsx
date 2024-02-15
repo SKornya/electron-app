@@ -10,22 +10,6 @@ const ChartWrapper: FunctionComponent = () => {
   const [show, setShow] = useState<boolean>(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
-  // const addPoint = () => {
-  //   const date = new Date();
-  //   dispatch(setData(Math.ceil(Math.random() * 10)));
-  //   dispatch(setTime(date));
-  // };
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     addPoint();
-  //   }, 500);
-
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, [data, categories]);
-
   const hideSettings = () => {
     setShow(false);
   };
@@ -39,7 +23,7 @@ const ChartWrapper: FunctionComponent = () => {
     <>
       {show && <Settings setYAxis={console.log} top={position.y} left={position.x} />}
 
-      <div className='chartjs'
+      <div className='chart'
         onClick={hideSettings}
         onContextMenu={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => showSettings(e)}
       >
