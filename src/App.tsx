@@ -1,4 +1,4 @@
-import Chart from './components/Chart/Chart';
+import Chart from './components/ChartWrapper/ChartWrapperr';
 import Sidebar from './components/Sidebar/Sidebar';
 
 import './App.css';
