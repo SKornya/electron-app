@@ -106,7 +106,7 @@ app.whenReady().then(() => {
 // code. You can also put them in separate files and require them here.
 
 // listen the channel `message` and resend the received message to the renderer process
-ipcMain.on('message', (event: IpcMainEvent, message: any) => {
+ipcMain.on('message', (event: IpcMainEvent, message: unknown) => {
   console.log(message);
   setTimeout(() => event.sender.send('message', 'hi from electron'), 500);
 });
