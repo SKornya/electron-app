@@ -7,7 +7,7 @@ import settingsIcon from '../../assets/icons/settings_icon.svg';
 import './Header.less';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../../store';
-import { setData, setTime } from '../../model/dataReducer';
+import { resetData, setData, setTime } from '../../model/dataReducer';
 import { setPaused, setRunning, setStopped } from '../../model/appReducer';
 
 const Header: FunctionComponent = () => {
@@ -43,7 +43,7 @@ const Header: FunctionComponent = () => {
     if (intervalId) {
       clearInterval(intervalId);
     }
-    // dispatch();
+    dispatch(resetData());
   };
 
   const showModalWindow = () => {
