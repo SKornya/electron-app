@@ -4,7 +4,6 @@ interface AppSettings {
 
 interface AppSettingsAction {
   type: string;
-  payload: string;
 }
 
 const SET_STOPPED = 'SETSTOPPED';
