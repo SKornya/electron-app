@@ -1,6 +1,12 @@
 .header {
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
+
+  &__buttons {
+    &-start:disabled, &-pause:disabled, &-stop:disabled {
+      background-color: #404040!important;
+    }
+  }
 
   &__settings {
     cursor: pointer;
