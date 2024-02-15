@@ -16,7 +16,7 @@
   "repository": {
     "url": "https://github.com/SKornya/electron-app"
   },
-  "productName": "agilentPowermeterDataCollector",
+  "productName": "chart",
   "scripts": {
     "dev": "concurrently \"yarn dev:vite\" \" yarn dev:electron\"",
     "dev:vite": "vite",
@@ -33,12 +33,13 @@
   },
   "dependencies": {
     "@react-three/fiber": "^8.15.16",
+    "chart.js": "^4.4.1",
+    "chartjs-adapter-date-fns": "^3.0.0",
+    "chartjs-plugin-zoom": "^2.0.1",
+    "date-fns": "^3.3.1",
     "electron-is-dev": "^2.0.0",
-    "highcharts": "^11.3.0",
-    "highcharts-custom-events": "^3.0.10",
-    "highcharts-export-server": "^3.1.1",
-    "highcharts-react-official": "^3.2.1",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^9.1.0",
     "redux": "^5.0.1"
