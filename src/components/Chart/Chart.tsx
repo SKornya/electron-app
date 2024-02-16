@@ -25,6 +25,8 @@ import { ru } from 'date-fns/locale';
 const Chart: FunctionComponent = memo(() => {
   const values = useSelector((state: RootState) => state.data.data);
   const categories = useSelector((state: RootState) => state.data.categories);
+  const axisSettings = useSelector((state: RootState) => state.chart);
+  const { xAxis, yAxis } = axisSettings;
 
   const parsedData = values.map((value, i) => ({
     x: categories[i].getTime(),
@@ -52,8 +54,8 @@ const Chart: FunctionComponent = memo(() => {
     scales: {
       x: {
         type: 'time',
-        max: undefined,
-        min: undefined,
+        max: xAxis.max,
+        min: xAxis.min,
         time: {
           parser: 'X',
           unit: 'second',
@@ -62,7 +64,7 @@ const Chart: FunctionComponent = memo(() => {
           }
         },
         ticks: {
-          maxTicksLimit: 10
+          maxTicksLimit: xAxis.tick,
         },
         grid: {
           color: '#707070'
@@ -74,13 +76,13 @@ const Chart: FunctionComponent = memo(() => {
         }
       },
       y: {
-        max: undefined,
-        min: undefined,
+        max: yAxis.max,
+        min: yAxis.min,
         grid: {
           color: '#707070'
         },
         ticks: {
-          stepSize: 1
+          stepSize: yAxis.tick,
         }
       }
     },
