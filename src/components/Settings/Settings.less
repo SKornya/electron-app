@@ -1,11 +1,12 @@
 .settings {
-  display: flex;
+  // display: flex;
   align-items: center;
   justify-content: center;
   
   background-color: #222121;
 
   width: 300px;
+  height: 300px;
 
   margin: 5px 0;
   padding: 10px;
@@ -17,5 +18,26 @@
   &__button {
     width: 100%;
     margin-top: 10px;
+  }
+
+  &__tabs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+
+    margin-bottom: 10px;
+
+    &-button.active {
+      background-color: #646cff;
+    }
+  }
+
+  &__form {
+    display: none;
+
+    &.active {
+      display: block;
+    }
   }
 }

@@ -1,54 +1,34 @@
-import React, { FormEvent, FunctionComponent, useRef } from 'react';
-// import { AxisInterface } from '../Chart/Chart';
-import Input from '../Input/Input';
+  import { FunctionComponent, RefAttributes, forwardRef, useState } from 'react';
 
-import './Settings.less';
+  import './Settings.less';
+  import SettingsForm from '../SettingsForm/SettingsForm';
 
-interface SettingsProps {
-  setYAxis: React.Dispatch<React.SetStateAction<Highcharts.YAxisOptions>>;
-  top: number;
-  left: number;
-}
+  interface SettingsProps {
+    top: number;
+    left: number;
+  }
 
-const Settings: FunctionComponent<SettingsProps> = ({ setYAxis, top, left }) => {
-  const formRef = useRef<HTMLFormElement>(null);
+  const Settings: FunctionComponent<SettingsProps & RefAttributes<HTMLDivElement>> = forwardRef<HTMLDivElement, SettingsProps>(({ top, left }, ref) => {
+    const [activeAxis, setActiveAxis] = useState<'first' | 'second'>('first');
 
-  const setSettings = (event: FormEvent) => {
-    event.preventDefault();
+    return (
+      <div className="settings" style={{ position: 'absolute', top, left }} ref={ref}>
+        <div className="settings__tabs">
+          <button className={`settings__tabs-button ${activeAxis === 'first' ? 'active' : ''}`} onClick={() => setActiveAxis('first')}>
+            Ось X
+          </button>
+          <button className={`settings__tabs-button ${activeAxis === 'second' ? 'active' : ''}`} onClick={() => setActiveAxis('second')}>
+            Ось Y
+          </button>
+        </div>
 
-    const formData = new FormData(formRef.current!);
+      <div className='settings__tabs-content'>
+        <SettingsForm type={'xAxis'} className={activeAxis === 'first' ? 'active' : ''} />
+        <SettingsForm type={'yAxis'} className={activeAxis === 'second' ? 'active' : ''} />
+      </div>
 
-    const formDataObject: { [key: string]: number | null } = {};
-    formData.forEach((value, key) => {
-      const data = value as string;
-      const formattedDelimiterData: string = data.replace(',', '.');
+      </div>
+    );
+  });
 
-      let numberedData;
-
-      if (formattedDelimiterData === '') {
-        formDataObject[key] = null;
-      } else {
-        numberedData = Number(formattedDelimiterData);
-        formDataObject[key] = isNaN(numberedData) ? null : numberedData;
-      }
-    });
-
-    console.log(formDataObject);
-
-    setYAxis(formDataObject as Highcharts.YAxisOptions);
-  };
-
-  return (
-    <div className="settings" style={{ position: 'absolute', top, left }}>
-      <form ref={formRef} onSubmit={setSettings}>
-        <Input name="min" />
-        <Input name="max" />
-        <Input name="tickInterval" />
-
-        <button className='settings__button'>Применить настройки</button>
-      </form>
-    </div>
-  );
-};
-
-export default Settings;
+  export default Settings;
