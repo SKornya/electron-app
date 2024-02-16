@@ -1,15 +1,16 @@
-interface AxisSettings {
+export interface AxisSettings {
   min: number | undefined;
   max: number | undefined;
   tick: number | undefined;
+  [key: string]: number | undefined;
 }
 
-interface ChatSettings {
+interface ChartSettings {
   xAxis: AxisSettings;
   yAxis: AxisSettings;
 }
 
-interface ChatSettingsAction {
+interface ChartSettingsAction {
   type: string;
   payload: AxisSettings;
 }
@@ -17,7 +18,7 @@ interface ChatSettingsAction {
 const SET_XAXIS = 'SETXAXIS';
 const SET_YAXIS = 'SETYAXIS';
 
-const initialState: ChatSettings = {
+const initialState: ChartSettings = {
   xAxis: {
     min: undefined,
     max: undefined,
@@ -40,7 +41,7 @@ const setYAxix = (value: AxisSettings) => ({
   payload: value,
 });
 
-const chartReducer = (state: ChatSettings = initialState, action: ChatSettingsAction) => {
+const chartReducer = (state: ChartSettings = initialState, action: ChartSettingsAction) => {
   switch (action.type) {
     case SET_XAXIS:
       return ({
