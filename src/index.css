@@ -47,3 +47,8 @@ button {
 button:hover {
   border-color: #646cff;
 }
+
+button:disabled {
+  background-color: #404040;
+  border-color: transparent;
+}
