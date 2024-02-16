@@ -3,9 +3,9 @@ interface Inputs {
 }
 
 const plotSettingsTranslation: Inputs = {
-  min: 'Минимальное значение Y',
-  max: 'Максимальное значение Y',
-  tickInterval: 'Цена деления Y',
+  min: 'Минимальное значение',
+  max: 'Максимальное значение',
+  tick: 'Цена деления',
 };
 
 export default plotSettingsTranslation;
